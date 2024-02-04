@@ -1,20 +1,41 @@
+import 'package:flick_video_player/flick_video_player.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
-class Video extends StatefulWidget {
-  const Video({super.key});
+class VideoPlay extends StatefulWidget {
+  const VideoPlay({super.key});
 
   @override
-  State<Video> createState() => _VideoState();
+  State<VideoPlay> createState() => _VideoPlayState();
 }
 
-class _VideoState extends State<Video> {
+class _VideoPlayState extends State<VideoPlay> {
+  late FlickManager flickManager;
+
+  @override
+  void initState() {
+    super.initState();
+    flickManager = FlickManager(
+      videoPlayerController: VideoPlayerController.networkUrl(
+        Uri.parse(
+            'https://github.com/GeekyAnts/flick-video-player-demo-videos/blob/master/example/rio_from_above_compressed.mp4?raw=true'),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    flickManager.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 2,
+      height: 450,
       color: Colors.grey,
-      child: const Text("1111"),
+      child: FlickVideoPlayer(flickManager: flickManager),
     );
   }
 }
