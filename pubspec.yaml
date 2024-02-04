@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   fluro: ^2.0.5
+  window_manager: ^0.3.8
 
 dev_dependencies:
   flutter_test:

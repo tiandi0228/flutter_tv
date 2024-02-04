@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tv/screens/detail/widgets/episodes.dart';
 import 'package:flutter_tv/screens/detail/widgets/testimonials.dart';
@@ -13,14 +16,10 @@ class Body extends StatefulWidget {
 class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height + 62,
-        padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.all(10),
-        child: const Column(
+    return Container(
+      margin: const EdgeInsets.only(left: 10, top: 30, right: 10, bottom: 10),
+      child: const SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [

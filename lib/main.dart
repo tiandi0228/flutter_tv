@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tv/constants.dart';
 import 'package:flutter_tv/router/router.dart';
 import 'package:flutter_tv/screens/splash/splash_screen.dart';
+import 'package:flutter_tv/utils/window_util.dart';
 
 void main() {
+  WindowUtil.init(800, 600);
+  WindowUtil.setResizable(false);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   runApp(const MainApp());
   MyRouter.configureRoutes(MyRouter.router);
