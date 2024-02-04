@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tv/screens/detail/widgets/episodes.dart';
 import 'package:flutter_tv/screens/detail/widgets/testimonials.dart';
@@ -19,11 +16,12 @@ class _BodyState extends State<Body> {
     return Container(
       margin: const EdgeInsets.only(left: 10, top: 30, right: 10, bottom: 10),
       child: const SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Video(),
+            VideoPlay(),
             Episodes(),
             Testimonials(),
           ],

@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   fluro: ^2.0.5
   window_manager: ^0.3.8
+  cached_network_image: ^3.3.1
+  flick_video_player: ^0.7.0
 
 dev_dependencies:
   flutter_test:
