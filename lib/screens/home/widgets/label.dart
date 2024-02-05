@@ -64,7 +64,7 @@ class _LabelState extends State<Label> {
                 splashColor: Colors.transparent,
                 onTap: () {
                   developer.log(e, name: '电影名');
-                  Navigator.pushNamed(context, '/detail');
+                  Navigator.pushNamed(context, '/detail/1');
                 },
                 child: Container(
                   margin: const EdgeInsets.only(top: 20),

@@ -23,39 +23,41 @@ class _SearchState extends State<Search> {
             height: 50,
             padding: const EdgeInsets.all(0),
             child: TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: const Color(0xF1F3F4F5),
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: Colors.grey,
-                  ),
-                  prefixIconConstraints: const BoxConstraints(minWidth: 50),
-                  border: InputBorder.none,
-                  hintText: '搜索影片的名字',
-                  hintStyle: const TextStyle(
-                    color: Colors.grey,
-                  ),
-                  hoverColor: Colors.white,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color(0xF1F3F4F5),
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Colors.grey,
                 ),
-                onSubmitted: (value) {
-                  if (value == "") {
-                    return;
-                  }
-                  developer.log(value, name: '搜索');
-                  Navigator.pushNamed(context, '/detail');
-                },
-                onEditingComplete: () {
-                  developer.log('搜索完成');
-                }),
+                prefixIconConstraints: const BoxConstraints(minWidth: 50),
+                border: InputBorder.none,
+                hintText: '搜索影片的名字',
+                hintStyle: const TextStyle(
+                  color: Colors.grey,
+                ),
+                hoverColor: Colors.white,
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(50.0),
+                ),
+              ),
+              onSubmitted: (value) {
+                if (value.isEmpty) {
+                  return;
+                }
+                String params = Uri.encodeComponent(value);
+                developer.log(params, name: '搜索');
+                Navigator.pushNamed(context, '/search/$params');
+              },
+              onEditingComplete: () {
+                developer.log('搜索完成');
+              },
+            ),
           ),
         ],
       ),

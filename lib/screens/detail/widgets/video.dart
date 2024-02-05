@@ -16,6 +16,8 @@ class _VideoPlayState extends State<VideoPlay> {
   void initState() {
     super.initState();
     flickManager = FlickManager(
+      autoInitialize: false,
+      autoPlay: false,
       videoPlayerController: VideoPlayerController.networkUrl(
         Uri.parse(
             'https://github.com/GeekyAnts/flick-video-player-demo-videos/blob/master/example/rio_from_above_compressed.mp4?raw=true'),
