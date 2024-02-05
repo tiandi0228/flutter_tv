@@ -1,6 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tv/model/movie/movie.dart';
 import 'dart:developer' as developer;
+
+import 'package:flutter_tv/service/testimonials.dart';
 
 class Testimonials extends StatefulWidget {
   const Testimonials({super.key});
@@ -10,23 +13,18 @@ class Testimonials extends StatefulWidget {
 }
 
 class _TestimonialsState extends State<Testimonials> {
-  final List<String> lists = [
-    '三大队',
-    '仙剑四',
-    '龙珠超',
-    '钢铁侠',
-    '超人前传',
-    '三大队',
-    '仙剑四',
-    '龙珠超',
-    '钢铁侠',
-    '超人前传',
-    '三大队',
-    '仙剑四',
-    '龙珠超',
-    '钢铁侠',
-    '超人前传'
-  ];
+  final List<MovieItem> _movies = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTestimonialMovie().then((data) {
+      setState(() {
+        _movies.clear();
+        _movies.addAll(data);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,55 +60,69 @@ class _TestimonialsState extends State<Testimonials> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: lists.asMap().entries.map((e) {
-                  String item = e.value;
+                children: _movies.asMap().entries.map((e) {
                   int index = e.key;
-                  return InkWell(
-                    onTap: () => {
-                      developer.log('当前选择的视频: $item', name: 'detail'),
-                    },
-                    child: Container(
-                      width: (MediaQuery.of(context).size.width - 62) / 5,
-                      margin: EdgeInsets.only(
-                          right: index + 1 == lists.length ? 0 : 10),
-                      color: const Color(0xCCCCCCCC),
-                      child: Column(
-                        children: [
-                          CachedNetworkImage(
-                            imageUrl:
-                                'https://picsum.photos/250?image=${index + 1}',
-                            height: 150,
-                            fit: BoxFit.fill,
-                            placeholder: (context, url) =>
-                                const CircularProgressIndicator(),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                                left: 10, top: 5, right: 10),
-                            height: 45,
-                            alignment: Alignment.center,
-                            child: Text(
-                              item,
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: const TextStyle(
-                                color: Color(0xCC5B5B5B),
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return _item(_movies[index], index);
                 }).toList(),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _item(MovieItem movie, int index) {
+    return InkWell(
+      onTap: () => {
+        developer.log('当前选择的视频: $movie', name: 'detail'),
+      },
+      child: Container(
+        width: (MediaQuery.of(context).size.width - 62) / 5,
+        margin: EdgeInsets.only(right: index + 1 == _movies.length ? 0 : 10),
+        color: const Color(0xCCCCCCCC),
+        child: Column(
+          children: [
+            CachedNetworkImage(
+              imageUrl: movie.moviePic,
+              width: (MediaQuery.of(context).size.width - 62) / 5,
+              height: 150,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => const CircularProgressIndicator(),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
+              height: 45,
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Text(
+                    movie.movieName,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Color(0xCC5B5B5B),
+                      fontSize: 12,
+                    ),
+                  ),
+                  const Padding(padding: EdgeInsets.only(top: 5)),
+                  Text(
+                    movie.movieText,
+                    softWrap: true,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: const TextStyle(
+                      color: Color(0xCC717171),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
