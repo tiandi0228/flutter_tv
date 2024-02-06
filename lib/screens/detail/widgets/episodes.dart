@@ -17,14 +17,14 @@ class Episodes extends StatefulWidget {
 
 class _EpisodesState extends State<Episodes> {
   final List<EpisodesItem> _episodes = [];
-  var movie = Movie("", "", "", "", "");
+  var _movie = Movie("", "", "", "", "");
 
   @override
   void initState() {
     super.initState();
     fetchMovie(widget.id).then((data) {
       setState(() {
-        movie = data;
+        _movie = data;
       });
     });
     fetchEpisodes(widget.id).then((data) {
@@ -44,7 +44,7 @@ class _EpisodesState extends State<Episodes> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _info(movie),
+          _info(_movie),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
           Container(
             alignment: Alignment.topLeft,
@@ -169,7 +169,7 @@ class _EpisodesState extends State<Episodes> {
                   child: Container(
                     width: 80,
                     height: 30,
-                    color: Colors.black,
+                    color: widget.id == id ? Colors.blue : Colors.black,
                     alignment: Alignment.center,
                     child: Text(
                       item.movieName,

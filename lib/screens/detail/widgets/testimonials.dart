@@ -97,8 +97,10 @@ class _TestimonialsState extends State<Testimonials> {
   }
 
   Widget _item(TestimonialsItem movie, int index) {
+    String id = movie.movieUrl.split("/")[2].split(".")[0];
     return InkWell(
       onTap: () => {
+        Navigator.pushNamed(context, '/detail/$id-1-1'),
         developer.log('当前选择的视频: $movie', name: 'detail'),
       },
       child: Container(

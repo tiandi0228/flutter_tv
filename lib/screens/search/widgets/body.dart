@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tv/screens/search/widgets/result.dart';
 import 'package:flutter_tv/screens/search/widgets/search.dart';
+import 'package:flutter_tv/screens/search/widgets/page.dart';
 import 'dart:developer' as developer;
 
 class Body extends StatefulWidget {
@@ -14,6 +15,8 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   late String result;
+  int pageNum = 1;
+  late bool isRefresh = false;
 
   @override
   void initState() {
@@ -35,11 +38,22 @@ class _BodyState extends State<Body> {
               }
               setState(() {
                 result = val;
+                isRefresh = true;
               });
               developer.log(result, name: '搜索返回结果');
             },
           ),
-          Result(wd: result),
+          Result(wd: result, page: pageNum),
+          Pager(
+            wd: result,
+            page: isRefresh ? 1 : pageNum,
+            onChanged: (int page) {
+              setState(() {
+                pageNum = page;
+              });
+              developer.log('$page', name: '分页');
+            },
+          ),
         ],
       ),
     );

@@ -11,6 +11,14 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  final TextEditingController _textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _textController.text = widget.wd;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -21,6 +29,7 @@ class _SearchState extends State<Search> {
           height: 50,
           margin: const EdgeInsets.only(top: 20),
           child: TextField(
+            controller: _textController,
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0xF1F3F4F5),
