@@ -1,24 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tv/model/movie/movie.dart';
+import 'package:flutter_tv/model/movie/testimonials.dart';
 import 'dart:developer' as developer;
 
 import 'package:flutter_tv/service/testimonials.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Testimonials extends StatefulWidget {
-  const Testimonials({super.key});
+  final String id;
+  const Testimonials({super.key, required this.id});
 
   @override
   State<Testimonials> createState() => _TestimonialsState();
 }
 
 class _TestimonialsState extends State<Testimonials> {
-  final List<MovieItem> _movies = [];
+  final List<TestimonialsItem> _movies = [];
 
   @override
   void initState() {
     super.initState();
-    fetchTestimonialMovie().then((data) {
+    fetchTestimonialMovie(widget.id).then((data) {
       setState(() {
         _movies.clear();
         _movies.addAll(data);
@@ -59,12 +61,34 @@ class _TestimonialsState extends State<Testimonials> {
             height: 200,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Row(
-                children: _movies.asMap().entries.map((e) {
-                  int index = e.key;
-                  return _item(_movies[index], index);
-                }).toList(),
-              ),
+              child: _movies.isEmpty
+                  ? Container(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Shimmer.fromColors(
+                        baseColor: Colors.grey.shade300,
+                        highlightColor: Colors.grey.shade100,
+                        enabled: true,
+                        child: Row(
+                          children: [1, 2, 3, 4, 5].map(
+                            (e) {
+                              return Container(
+                                width:
+                                    (MediaQuery.of(context).size.width - 62) /
+                                        5,
+                                margin: EdgeInsets.only(right: e == 5 ? 0 : 10),
+                                color: const Color(0xCCCCCCCC),
+                              );
+                            },
+                          ).toList(),
+                        ),
+                      ),
+                    )
+                  : Row(
+                      children: _movies.asMap().entries.map((e) {
+                        int index = e.key;
+                        return _item(_movies[index], index);
+                      }).toList(),
+                    ),
             ),
           ),
         ],
@@ -72,7 +96,7 @@ class _TestimonialsState extends State<Testimonials> {
     );
   }
 
-  Widget _item(MovieItem movie, int index) {
+  Widget _item(TestimonialsItem movie, int index) {
     return InkWell(
       onTap: () => {
         developer.log('当前选择的视频: $movie', name: 'detail'),

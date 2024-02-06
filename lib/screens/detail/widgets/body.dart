@@ -13,25 +13,30 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  late String id;
+
   @override
   void initState() {
     super.initState();
-    developer.log(widget.id, name: "id");
+    setState(() {
+      id = widget.id;
+    });
+    developer.log(id, name: "id");
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 10, top: 30, right: 10, bottom: 10),
-      child: const SingleChildScrollView(
+      child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            VideoPlay(),
-            Episodes(),
-            Testimonials(),
+            const VideoPlay(),
+            Episodes(id: id),
+            Testimonials(id: id),
           ],
         ),
       ),

@@ -15,6 +15,7 @@ dependencies:
   flick_video_player: ^0.7.0
   html: ^0.15.4
   dio: ^5.4.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

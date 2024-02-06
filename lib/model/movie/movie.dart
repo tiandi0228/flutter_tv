@@ -1,30 +1,24 @@
-class MovieItem {
+class Movie {
   // 影片名称
-  final String movieName;
+  String movieName;
 
-  // 影片缩略图
-  final String moviePic;
-
-  // 影片当前更新状态
-  final String movieText;
-
-  // 影片地址
-  final String movieUrl;
+  // 影片当前集数
+  String moviePage;
 
   // 影片上映年份
-  final String movieYear;
+  String movieYear;
 
   // 影片分类
-  final String movieClass;
+  String movieClass;
 
   // 影片来源地
-  final String movieSource;
+  String movieSource;
 
-  MovieItem(this.movieName, this.moviePic, this.movieText, this.movieUrl,
-      this.movieYear, this.movieClass, this.movieSource);
+  Movie(this.movieName, this.moviePage, this.movieYear, this.movieClass,
+      this.movieSource);
 
   @override
   String toString() {
-    return 'MovieItem{movieName: $movieName, moviePic: $moviePic, movieText: $movieText, movieUrl: $movieUrl, movieYear: $movieYear, movieClass: $movieClass, movieSource: $movieSource}';
+    return 'Movie{movieName: $movieName, moviePage: $moviePage, movieYear: $movieYear, movieClass: $movieClass, movieSource: $movieSource}';
   }
 }

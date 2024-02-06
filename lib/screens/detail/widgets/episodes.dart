@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tv/model/movie/episode.dart';
+import 'package:flutter_tv/model/movie/movie.dart';
 import 'dart:developer' as developer;
 
 import 'package:flutter_tv/service/episodes.dart';
+import 'package:flutter_tv/service/movie.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Episodes extends StatefulWidget {
-  const Episodes({super.key});
+  final String id;
+  const Episodes({super.key, required this.id});
 
   @override
   State<Episodes> createState() => _EpisodesState();
@@ -13,11 +17,17 @@ class Episodes extends StatefulWidget {
 
 class _EpisodesState extends State<Episodes> {
   final List<EpisodesItem> _episodes = [];
+  var movie = Movie("", "", "", "", "");
 
   @override
   void initState() {
     super.initState();
-    fetchEpisodes().then((data) {
+    fetchMovie(widget.id).then((data) {
+      setState(() {
+        movie = data;
+      });
+    });
+    fetchEpisodes(widget.id).then((data) {
       setState(() {
         _episodes.clear();
         _episodes.addAll(data);
@@ -34,31 +44,8 @@ class _EpisodesState extends State<Episodes> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                alignment: Alignment.topLeft,
-                padding: const EdgeInsets.only(bottom: 10),
-                child: const Text(
-                  '三大队',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 10, bottom: 10),
-                child: const Text(
-                  '第五集',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              ),
-            ],
-          ),
+          _info(movie),
+          const Padding(padding: EdgeInsets.only(bottom: 10)),
           Container(
             alignment: Alignment.topLeft,
             padding: const EdgeInsets.only(bottom: 10),
@@ -70,31 +57,144 @@ class _EpisodesState extends State<Episodes> {
               ),
             ),
           ),
-          Wrap(
-            spacing: 10,
-            runSpacing: 10,
-            children: _episodes.map((e) => _item(e)).toList(),
-          ),
+          _item()
         ],
       ),
     );
   }
 
-  Widget _item(EpisodesItem item) {
-    return InkWell(
-      onTap: () => {developer.log('当前集数：$item', name: 'detail')},
+  // 基本信息
+  Widget _info(Movie movie) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            movie.movieName.isEmpty
+                ? _shimmer()
+                : Text(
+                    movie.movieName,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            movie.moviePage.isEmpty
+                ? _shimmer()
+                : Text(
+                    movie.moviePage,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
+          ],
+        ),
+        const Padding(padding: EdgeInsets.only(top: 10)),
+        Row(
+          children: [
+            movie.movieClass.isEmpty
+                ? _shimmer()
+                : Container(
+                    width: 80,
+                    height: 30,
+                    color: const Color(0xFF7C7C7C),
+                    alignment: Alignment.center,
+                    child: Text(
+                      movie.movieClass,
+                      style: const TextStyle(color: Color(0xFFE1E1E1)),
+                    ),
+                  ),
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            movie.movieYear.isEmpty
+                ? _shimmer()
+                : Container(
+                    width: 80,
+                    height: 30,
+                    color: const Color(0xFF7C7C7C),
+                    alignment: Alignment.center,
+                    child: Text(
+                      movie.movieYear,
+                      style: const TextStyle(color: Color(0xFFE1E1E1)),
+                    ),
+                  ),
+            const Padding(padding: EdgeInsets.only(left: 10)),
+            movie.movieSource.isEmpty
+                ? _shimmer()
+                : Container(
+                    width: 80,
+                    height: 30,
+                    color: const Color(0xFF7C7C7C),
+                    alignment: Alignment.center,
+                    child: Text(
+                      movie.movieSource,
+                      style: const TextStyle(color: Color(0xFFE1E1E1)),
+                    ),
+                  ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  // 集数
+  Widget _item() {
+    return _episodes.isEmpty
+        ? Container(
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            child: Shimmer.fromColors(
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
+              enabled: true,
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: [1, 1, 1, 1, 1, 1, 1, 1].map((e) {
+                  return _shimmer();
+                }).toList(),
+              ),
+            ),
+          )
+        : Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: _episodes.map(
+              (item) {
+                String id = item.movieUrl.split("/")[2].split(".")[0];
+                return InkWell(
+                  onTap: () => {
+                    Navigator.pushNamed(context, '/detail/$id'),
+                    developer.log('当前集数：$item', name: 'detail'),
+                  },
+                  child: Container(
+                    width: 80,
+                    height: 30,
+                    color: Colors.black,
+                    alignment: Alignment.center,
+                    child: Text(
+                      item.movieName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ).toList(),
+          );
+  }
+
+  // 骨架
+  Widget _shimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey.shade300,
+      highlightColor: Colors.grey.shade100,
+      enabled: true,
       child: Container(
         width: 80,
         height: 30,
-        color: Colors.black,
-        alignment: Alignment.center,
-        child: Text(
-          item.movieName,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 14,
-          ),
-        ),
+        color: const Color(0xFF7C7C7C),
       ),
     );
   }
