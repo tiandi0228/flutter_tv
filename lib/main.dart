@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tv/constants.dart';
+import 'package:flutter_tv/config/constants.dart';
 import 'package:flutter_tv/router/router.dart';
 import 'package:flutter_tv/screens/splash/splash_screen.dart';
 import 'package:flutter_tv/utils/window_util.dart';

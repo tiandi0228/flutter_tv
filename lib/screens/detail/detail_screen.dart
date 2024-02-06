@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tv/screens/detail/widgets/body.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+  final String id;
+  const DetailScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Body());
+    return Scaffold(body: Body(id: id));
   }
 }

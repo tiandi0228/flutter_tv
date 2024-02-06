@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tv/model/movie/episode.dart';
 import 'dart:developer' as developer;
+
+import 'package:flutter_tv/service/episodes.dart';
 
 class Episodes extends StatefulWidget {
   const Episodes({super.key});
@@ -9,34 +12,19 @@ class Episodes extends StatefulWidget {
 }
 
 class _EpisodesState extends State<Episodes> {
-  static List<int> episodes = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26
-  ];
+  final List<EpisodesItem> _episodes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchEpisodes().then((data) {
+      setState(() {
+        _episodes.clear();
+        _episodes.addAll(data);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -85,54 +73,28 @@ class _EpisodesState extends State<Episodes> {
           Wrap(
             spacing: 10,
             runSpacing: 10,
-            children: episodes
-                .map(
-                  (e) => InkWell(
-                    onTap: () => {developer.log('当前集数：$e', name: 'detail')},
-                    child: Container(
-                      width: 30,
-                      height: 30,
-                      color: Colors.black,
-                      alignment: Alignment.center,
-                      child: Text(
-                        '$e',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
+            children: _episodes.map((e) => _item(e)).toList(),
           ),
-          // GridView.count(
-          //   crossAxisCount: 12,
-          //   shrinkWrap: true,
-          //   mainAxisSpacing: 5,
-          //   crossAxisSpacing: 5,
-          //   childAspectRatio: 3,
-          //   padding: EdgeInsets.zero,
-          //   children: episodes
-          //       .map(
-          //         (e) => InkWell(
-          //           onTap: () => {developer.log('当前集数：$e', name: 'detail')},
-          //           child: Container(
-          //             color: Colors.black,
-          //             alignment: Alignment.center,
-          //             child: Text(
-          //               '$e',
-          //               style: TextStyle(
-          //                 color: Colors.white,
-          //                 fontSize: MediaQuery.of(context).size.width / 80,
-          //               ),
-          //             ),
-          //           ),
-          //         ),
-          //       )
-          //       .toList(),
-          // ),
         ],
+      ),
+    );
+  }
+
+  Widget _item(EpisodesItem item) {
+    return InkWell(
+      onTap: () => {developer.log('当前集数：$item', name: 'detail')},
+      child: Container(
+        width: 80,
+        height: 30,
+        color: Colors.black,
+        alignment: Alignment.center,
+        child: Text(
+          item.movieName,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
+        ),
       ),
     );
   }
