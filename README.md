@@ -7,3 +7,4 @@
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/home.png)
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo1.png)
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo2.png)
+![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo3.png)
