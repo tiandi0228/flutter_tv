@@ -12,11 +12,11 @@ dependencies:
   fluro: ^2.0.5
   window_manager: ^0.3.8
   cached_network_image: ^3.3.1
-  flick_video_player: ^0.7.0
   html: ^0.15.4
   dio: ^5.4.0
   shimmer: ^3.0.0
   pagination_flutter: ^0.0.8
+  qyplayer: ^0.1.2
 
 dev_dependencies:
   flutter_test:

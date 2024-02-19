@@ -34,7 +34,7 @@ class _BodyState extends State<Body> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const VideoPlay(),
+            VideoPlay(id: id),
             Episodes(id: id),
             Testimonials(id: id),
           ],
