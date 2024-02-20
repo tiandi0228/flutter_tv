@@ -11,7 +11,6 @@ Future fetchTestimonialMovie(String id) async {
     var content = document.querySelector(".module-items");
     var items = content?.querySelectorAll(".module-item");
     for (int i = 0; i < items!.length; i++) {
-      print(items[i].querySelector('.video-name>a')!.text.trim());
       TestimonialsItem item = TestimonialsItem(
         items[i].querySelector('.video-name>a')!.text.trim(), // 获取影片名
         items[i]

@@ -167,7 +167,7 @@ class _EpisodesState extends State<Episodes> {
                     developer.log('当前集数：$item', name: 'detail'),
                   },
                   child: Container(
-                    width: 80,
+                    width: 75,
                     height: 30,
                     color: widget.id == id ? Colors.blue : Colors.black,
                     alignment: Alignment.center,
@@ -175,7 +175,7 @@ class _EpisodesState extends State<Episodes> {
                       item.movieName,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 13,
                       ),
                     ),
                   ),

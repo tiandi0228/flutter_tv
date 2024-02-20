@@ -28,10 +28,6 @@ Future fetchSearch(String str, int page) async {
       for (var i = 0; i < starlings.length; i++) {
         starringTemp.add(starlings[i].text.trim());
       }
-      print(items[i]
-          .querySelector('.module-item-pic>img')!
-          .attributes['alt']!
-          .trim());
       SearchMovie item = SearchMovie(
           items[i]
               .querySelector('.module-item-pic>img')!
