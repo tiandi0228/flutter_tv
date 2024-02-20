@@ -52,7 +52,8 @@ class _SearchState extends State<Search> {
                 }
                 String params = Uri.encodeComponent(value);
                 developer.log(params, name: '搜索');
-                Navigator.pushNamed(context, '/search/$params');
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/search/$params", (route) => false);
               },
               onEditingComplete: () {
                 developer.log('搜索完成');

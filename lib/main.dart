@@ -9,8 +9,8 @@ void main() {
   WindowUtil.init(800, 600);
   WindowUtil.setResizable(false);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-  runApp(const MainApp());
   MyRouter.configureRoutes(MyRouter.router);
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {

@@ -5,8 +5,6 @@ import 'package:flutter_tv/screens/detail/widgets/testimonials.dart';
 import 'package:flutter_tv/screens/detail/widgets/video.dart';
 import 'dart:developer' as developer;
 
-import 'package:flutter_tv/screens/home/home_screen.dart';
-
 class Body extends StatefulWidget {
   final String id;
   const Body({super.key, required this.id});
@@ -17,7 +15,6 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   late String id;
-
   @override
   void initState() {
     super.initState();
@@ -49,7 +46,8 @@ class _BodyState extends State<Body> {
                     child: IconButton(
                       icon: const Icon(Icons.arrow_back),
                       onPressed: () {
-                        Navigator.pushNamed(context, "/");
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, "/home", (route) => false);
                       },
                     ),
                   ),

@@ -100,7 +100,8 @@ class _TestimonialsState extends State<Testimonials> {
     String id = movie.movieUrl.split("/")[2].split(".")[0];
     return InkWell(
       onTap: () => {
-        Navigator.pushNamed(context, '/detail/$id-1-1'),
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/detail/$id-1-1", (route) => false),
         developer.log('当前选择的视频: $movie', name: 'detail'),
       },
       child: Container(

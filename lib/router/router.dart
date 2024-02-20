@@ -16,13 +16,8 @@ class MyRouter {
       developer.log("ROUTE WAS NOT FOUND !!!");
       return;
     });
-    router.define(homeScreen,
-        handler: homeScreenHandler, transitionType: TransitionType.inFromLeft);
-    router.define(detailScreen,
-        handler: detailScreenHandler,
-        transitionType: TransitionType.inFromLeft);
-    router.define(searchScreen,
-        handler: searchScreenHandler,
-        transitionType: TransitionType.inFromLeft);
+    router.define(homeScreen, handler: homeScreenHandler);
+    router.define(detailScreen, handler: detailScreenHandler);
+    router.define(searchScreen, handler: searchScreenHandler);
   }
 }

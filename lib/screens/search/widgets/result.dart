@@ -200,7 +200,8 @@ class _ResultState extends State<Result> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/detail/$id-1-1');
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, "/detail/$id-1-1", (route) => false);
                       developer.log(movie.movieName, name: 'search');
                     },
                     style: ButtonStyle(

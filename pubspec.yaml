@@ -16,7 +16,7 @@ dependencies:
   dio: ^5.4.0
   shimmer: ^3.0.0
   pagination_flutter: ^0.0.8
-  qyplayer: ^0.1.2
+  video_player: ^2.8.2
 
 dev_dependencies:
   flutter_test:
