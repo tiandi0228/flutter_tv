@@ -163,7 +163,8 @@ class _EpisodesState extends State<Episodes> {
                 String id = item.movieUrl.split("/")[2].split(".")[0];
                 return InkWell(
                   onTap: () => {
-                    Navigator.pushNamed(context, '/detail/$id'),
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/detail/$id", (route) => false),
                     developer.log('当前集数：$item', name: 'detail'),
                   },
                   child: Container(

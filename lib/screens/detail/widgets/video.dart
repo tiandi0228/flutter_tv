@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tv/service/video.dart';
 import 'package:flutter_tv/utils/format_duration_util.dart';
@@ -18,8 +21,11 @@ class _VideoPlayState extends State<VideoPlay> {
   bool _videoInit = false;
   int _firstRun = 0;
   String url = "";
-  String _totalDuration = "0:00:00";
-  String _position = "0:00:00";
+  String _totalDuration = "00:00:00";
+  String _position = "00:00:00";
+  double _progressValue = 0.0;
+  String _labelProgress = "00:00:00";
+  double _volumeValue = 0.0;
 
   @override
   void initState() {
@@ -39,12 +45,13 @@ class _VideoPlayState extends State<VideoPlay> {
     _controller = VideoPlayerController.network(url);
     _controller.addListener(_videoListener);
     await _controller.initialize();
-    developer.log("${_controller.value.position}", name: "加载完成");
+    developer.log("加载完成");
     setState(() {
       _videoInit = true;
       _firstRun = 0;
       _totalDuration =
           FormatDurationUtil.formatDuration(_controller.value.duration);
+      _volumeValue = _controller.value.volume;
     });
   }
 
@@ -59,7 +66,14 @@ class _VideoPlayState extends State<VideoPlay> {
   }
 
   @override
+  void deactivate() {
+    developer.log('暂时销毁');
+    super.deactivate();
+  }
+
+  @override
   void dispose() {
+    developer.log('销毁');
     _controller.dispose();
     super.dispose();
   }
@@ -71,9 +85,16 @@ class _VideoPlayState extends State<VideoPlay> {
       await _controller.pause();
     }
     if (_controller.value.isPlaying) {
+      int position = _controller.value.position.inMilliseconds;
+      int duration = _controller.value.duration.inMilliseconds;
+      if (position >= duration) {
+        position = duration;
+      }
       setState(() {
         _position =
             FormatDurationUtil.formatDuration(_controller.value.position);
+        _progressValue = position / duration * 100;
+        _labelProgress = _position;
       });
     }
   }
@@ -83,6 +104,7 @@ class _VideoPlayState extends State<VideoPlay> {
     return Column(
       children: [
         _isUrl(),
+        if (_videoInit) _buildProgress(),
         if (_videoInit) _buildTools(),
       ],
     );
@@ -193,37 +215,148 @@ class _VideoPlayState extends State<VideoPlay> {
     );
   }
 
+  Widget _buildProgress() {
+    return SliderTheme(
+      data: SliderTheme.of(context).copyWith(
+        activeTrackColor: Colors.blue,
+        inactiveTrackColor: Colors.white,
+        valueIndicatorColor: Colors.blue,
+        inactiveTickMarkColor: Colors.white,
+        overlayShape: const RoundSliderOverlayShape(
+          overlayRadius: 10,
+        ),
+        thumbColor: Colors.blue,
+        thumbShape: const RoundSliderThumbShape(
+          disabledThumbRadius: 7,
+          enabledThumbRadius: 7,
+        ),
+      ),
+      child: Slider(
+        value: _progressValue,
+        label: _labelProgress,
+        divisions: 100,
+        onChangeStart: (val) {
+          developer.log('$val');
+          _controller.pause();
+        },
+        onChangeEnd: (val) {
+          developer.log('$val');
+          int duration = _controller.value.duration.inMilliseconds;
+          _controller.seekTo(
+            Duration(milliseconds: (_progressValue / 100 * duration).toInt()),
+          );
+          Future.delayed(const Duration(seconds: 1))
+              .whenComplete(() => _controller.play());
+        },
+        onChanged: (value) {
+          setState(() {
+            _progressValue = value;
+            _labelProgress =
+                FormatDurationUtil.formatDuration(_controller.value.position);
+          });
+        },
+        min: 0,
+        max: 100,
+      ),
+    );
+  }
+
   Widget _buildTools() {
     return Container(
       padding: const EdgeInsets.all(5),
       height: 40,
       color: Colors.black,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Row(
+            children: [
+              IconButton(
+                padding: EdgeInsets.zero,
+                onPressed: () {
+                  setState(() {
+                    _controller.value.isPlaying
+                        ? _controller.pause()
+                        : _controller.play();
+                    _firstRun = _firstRun + 1;
+                  });
+                },
+                iconSize: 26,
+                icon: Icon(
+                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                  color: Colors.grey,
+                ),
+              ),
+              _buildVolume(),
+              Container(
+                margin: const EdgeInsets.only(left: 10),
+                child: Text(
+                  '$_position / $_totalDuration',
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
+          ),
           IconButton(
             padding: EdgeInsets.zero,
-            onPressed: () {
-              setState(() {
-                _controller.value.isPlaying
-                    ? _controller.pause()
-                    : _controller.play();
-                _firstRun = _firstRun + 1;
-              });
-            },
-            iconSize: 26,
-            icon: Icon(
-              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-              color: Colors.grey,
-            ),
+            onPressed: () {},
+            icon: const Icon(Icons.fullscreen_rounded, color: Colors.grey),
+          )
+        ],
+      ),
+    );
+  }
+
+  IconData _buildVolumeIcon() {
+    if (_volumeValue == 0) {
+      return Icons.volume_mute_rounded;
+    } else if (_volumeValue < 100) {
+      return Icons.volume_down_rounded;
+    }
+    return Icons.volume_up_rounded;
+  }
+
+  Widget _buildVolume() {
+    return Container(
+      padding: EdgeInsets.zero,
+      child: Row(
+        children: [
+          Icon(
+            _buildVolumeIcon(),
+            color: Colors.grey,
           ),
-          Container(
-            margin: const EdgeInsets.only(left: 10),
-            child: Text(
-              '$_position / $_totalDuration',
-              style: const TextStyle(
-                color: Colors.grey,
-                fontSize: 13,
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              activeTrackColor: Colors.blue,
+              inactiveTrackColor: Colors.white,
+              valueIndicatorColor: Colors.blue,
+              inactiveTickMarkColor: Colors.white,
+              overlayShape: const RoundSliderOverlayShape(
+                overlayRadius: 5,
               ),
+              thumbColor: Colors.blue,
+              thumbShape: const RoundSliderThumbShape(
+                disabledThumbRadius: 5,
+                enabledThumbRadius: 5,
+              ),
+            ),
+            child: Slider(
+              value: _volumeValue,
+              label: '${_volumeValue.toInt()}%',
+              divisions: 100,
+              min: 0,
+              max: 100,
+              onChanged: (value) {
+                _controller.setVolume(
+                    NumUtil.getNumByValueDouble(value, 1)!.toDouble());
+                setState(() {
+                  _volumeValue =
+                      NumUtil.getNumByValueDouble(value, 1)!.toDouble();
+                });
+              },
             ),
           ),
         ],
