@@ -25,4 +25,29 @@ class WindowUtil {
   static void setResizable(bool reSize) {
     windowManager.setResizable(reSize);
   }
+
+  // 设置全屏
+  static void setFullScreen(bool fullScreen) {
+    windowManager.setFullScreen(fullScreen);
+  }
+
+  // 检测当前是否全屏
+  static Future<bool> isFullScreen() {
+    return windowManager.isFullScreen();
+  }
+
+  // 最大化窗口
+  static void setMaximize(bool reSize) {
+    windowManager.maximize(vertically: reSize);
+  }
+
+  // 取消最大化窗口
+  static void setUnmaximize() {
+    windowManager.unmaximize();
+  }
+
+  // 检测当前窗口是否最大化
+  static Future<bool> isMaximized() {
+    return windowManager.isMaximized();
+  }
 }

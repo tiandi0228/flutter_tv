@@ -8,6 +8,7 @@ import 'package:flutter_tv/utils/window_util.dart';
 void main() {
   WindowUtil.init(800, 600);
   WindowUtil.setResizable(false);
+  WindowUtil.setFullScreen(false);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
   MyRouter.configureRoutes(MyRouter.router);
   runApp(const MainApp());
