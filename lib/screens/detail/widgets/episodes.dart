@@ -1,14 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_tv/model/movie/episode.dart';
-import 'package:flutter_tv/model/movie/movie.dart';
 import 'dart:developer' as developer;
 
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tv/model/movie/episode.dart';
+import 'package:flutter_tv/model/movie/movie.dart';
 import 'package:flutter_tv/service/episodes.dart';
 import 'package:flutter_tv/service/movie.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Episodes extends StatefulWidget {
   final String id;
+
   const Episodes({super.key, required this.id});
 
   @override
@@ -45,15 +47,15 @@ class _EpisodesState extends State<Episodes> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _info(_movie),
-          const Padding(padding: EdgeInsets.only(bottom: 10)),
+          Padding(padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(5))),
           Container(
             alignment: Alignment.topLeft,
-            padding: const EdgeInsets.only(bottom: 10),
+            padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(5)),
             child: const Text(
               '选集',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 20,
               ),
             ),
           ),
@@ -78,7 +80,7 @@ class _EpisodesState extends State<Episodes> {
                       fontSize: 24,
                     ),
                   ),
-            const Padding(padding: EdgeInsets.only(left: 10)),
+            Padding(padding: EdgeInsets.only(left: ScreenUtil().setWidth(5))),
             movie.moviePage.isEmpty
                 ? _shimmer()
                 : Text(
@@ -90,45 +92,66 @@ class _EpisodesState extends State<Episodes> {
                   ),
           ],
         ),
-        const Padding(padding: EdgeInsets.only(top: 10)),
+        Padding(padding: EdgeInsets.only(top: ScreenUtil().setWidth(5))),
         Row(
           children: [
             movie.movieClass.isEmpty
                 ? _shimmer()
                 : Container(
-                    width: 80,
-                    height: 30,
+                    padding: EdgeInsets.only(
+                      left: ScreenUtil().setWidth(8),
+                      top: ScreenUtil().setWidth(3),
+                      right: ScreenUtil().setWidth(8),
+                      bottom: ScreenUtil().setWidth(3),
+                    ),
                     color: const Color(0xFF7C7C7C),
                     alignment: Alignment.center,
                     child: Text(
                       movie.movieClass,
-                      style: const TextStyle(color: Color(0xFFE1E1E1)),
+                      style: const TextStyle(
+                        color: Color(0xFFE1E1E1),
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-            const Padding(padding: EdgeInsets.only(left: 10)),
+            Padding(padding: EdgeInsets.only(left: ScreenUtil().setWidth(5))),
             movie.movieYear.isEmpty
                 ? _shimmer()
                 : Container(
-                    width: 80,
-                    height: 30,
+                    padding: EdgeInsets.only(
+                      left: ScreenUtil().setWidth(8),
+                      top: ScreenUtil().setWidth(3),
+                      right: ScreenUtil().setWidth(8),
+                      bottom: ScreenUtil().setWidth(3),
+                    ),
                     color: const Color(0xFF7C7C7C),
                     alignment: Alignment.center,
                     child: Text(
                       movie.movieYear,
-                      style: const TextStyle(color: Color(0xFFE1E1E1)),
+                      style: const TextStyle(
+                        color: Color(0xFFE1E1E1),
+                        fontSize: 16,
+                      ),
                     ),
                   ),
-            const Padding(padding: EdgeInsets.only(left: 10)),
+            Padding(padding: EdgeInsets.only(left: ScreenUtil().setWidth(5))),
             movie.movieSource.isEmpty
                 ? _shimmer()
                 : Container(
-                    width: 80,
-                    height: 30,
+                    padding: EdgeInsets.only(
+                      left: ScreenUtil().setWidth(8),
+                      top: ScreenUtil().setWidth(3),
+                      right: ScreenUtil().setWidth(8),
+                      bottom: ScreenUtil().setWidth(3),
+                    ),
                     color: const Color(0xFF7C7C7C),
                     alignment: Alignment.center,
                     child: Text(
                       movie.movieSource,
-                      style: const TextStyle(color: Color(0xFFE1E1E1)),
+                      style: const TextStyle(
+                        color: Color(0xFFE1E1E1),
+                        fontSize: 16,
+                      ),
                     ),
                   ),
           ],
@@ -141,7 +164,9 @@ class _EpisodesState extends State<Episodes> {
   Widget _item() {
     return _episodes.isEmpty
         ? Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            padding: EdgeInsets.only(
+                top: ScreenUtil().setWidth(5),
+                bottom: ScreenUtil().setWidth(5)),
             child: Shimmer.fromColors(
               baseColor: Colors.grey.shade300,
               highlightColor: Colors.grey.shade100,
@@ -168,7 +193,7 @@ class _EpisodesState extends State<Episodes> {
                     developer.log('当前集数：$item', name: 'detail'),
                   },
                   child: Container(
-                    width: 75,
+                    width: 72,
                     height: 30,
                     color: widget.id == id ? Colors.blue : Colors.black,
                     alignment: Alignment.center,
@@ -176,7 +201,7 @@ class _EpisodesState extends State<Episodes> {
                       item.movieName,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 13,
+                        fontSize: 14,
                       ),
                     ),
                   ),
@@ -193,7 +218,7 @@ class _EpisodesState extends State<Episodes> {
       highlightColor: Colors.grey.shade100,
       enabled: true,
       child: Container(
-        width: 80,
+        width: 72,
         height: 30,
         color: const Color(0xFF7C7C7C),
       ),

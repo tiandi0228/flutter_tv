@@ -1,16 +1,21 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tv/service/video.dart';
 import 'package:flutter_tv/utils/format_duration_util.dart';
+import 'package:flutter_tv/utils/platform_util.dart';
+import 'package:flutter_tv/utils/window_util.dart';
 import 'package:video_player/video_player.dart';
-import 'dart:developer' as developer;
 
 class VideoPlay extends StatefulWidget {
   final String id;
-  const VideoPlay({super.key, required this.id});
+  final Function onChangeFullScreen;
+
+  const VideoPlay(
+      {super.key, required this.id, required this.onChangeFullScreen});
 
   @override
   State<VideoPlay> createState() => _VideoPlayState();
@@ -26,6 +31,8 @@ class _VideoPlayState extends State<VideoPlay> {
   double _progressValue = 0.0;
   String _labelProgress = "00:00:00";
   double _volumeValue = 0.0;
+  bool _isFullScreen = false;
+  bool isPhone = PlatformUtils.isIOS || PlatformUtils.isIOS;
 
   @override
   void initState() {
@@ -62,6 +69,12 @@ class _VideoPlayState extends State<VideoPlay> {
     } catch (e) {
       developer.log('$e', name: '加载播放器失败');
     }
+    WindowUtil.isFullScreen().then((value) => {
+          if (!value) WindowUtil.setResizable(false),
+          setState(() {
+            _isFullScreen = value;
+          })
+        });
     super.didChangeDependencies();
   }
 
@@ -113,7 +126,7 @@ class _VideoPlayState extends State<VideoPlay> {
   Widget _isUrl() {
     if (url.isEmpty) {
       return AspectRatio(
-        aspectRatio: 3 / 1.5,
+        aspectRatio: _isFullScreen ? 2 / 1 : 3 / 1.5,
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
@@ -139,7 +152,7 @@ class _VideoPlayState extends State<VideoPlay> {
         return _buildPlayerInit();
       }
       return AspectRatio(
-        aspectRatio: _controller.value.aspectRatio,
+        aspectRatio: _isFullScreen ? 2 / 1 : _controller.value.aspectRatio,
         child: VideoPlayer(_controller),
       );
     } else {
@@ -149,7 +162,7 @@ class _VideoPlayState extends State<VideoPlay> {
 
   Widget _buildLoading() {
     return AspectRatio(
-      aspectRatio: 3 / 1.5,
+      aspectRatio: _isFullScreen ? 2 / 1 : 3 / 1.5,
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -168,14 +181,14 @@ class _VideoPlayState extends State<VideoPlay> {
 
   Widget _buildPlayerInit() {
     return AspectRatio(
-      aspectRatio: 3 / 1.5,
+      aspectRatio: _isFullScreen ? 2 / 1 : 3 / 1.3,
       child: Stack(
         children: [
           CachedNetworkImage(
             imageUrl:
                 'https://static.yximgs.com/bs2/adcarsku/skuc89bfa00-5ed0-42d0-9209-db3b6f500922.jpg',
             width: MediaQuery.of(context).size.width,
-            height: 400,
+            height: _isFullScreen ? MediaQuery.of(context).size.height : 400,
             fit: BoxFit.cover,
             placeholder: (context, url) => const CircularProgressIndicator(),
             errorWidget: (context, url, error) => const Icon(Icons.error),
@@ -189,7 +202,7 @@ class _VideoPlayState extends State<VideoPlay> {
   Widget _buildPlayerButton() {
     return Positioned(
       left: (MediaQuery.of(context).size.width - 60) / 2,
-      top: 150,
+      top: _isFullScreen ? (MediaQuery.of(context).size.height - 300) / 2 : 150,
       child: Container(
         padding: EdgeInsets.zero,
         width: 60,
@@ -287,7 +300,7 @@ class _VideoPlayState extends State<VideoPlay> {
                   color: Colors.grey,
                 ),
               ),
-              _buildVolume(),
+              if (isPhone) _buildVolume(),
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: Text(
@@ -302,8 +315,22 @@ class _VideoPlayState extends State<VideoPlay> {
           ),
           IconButton(
             padding: EdgeInsets.zero,
-            onPressed: () {},
-            icon: const Icon(Icons.fullscreen_rounded, color: Colors.grey),
+            onPressed: () {
+              if (isPhone) {
+              } else {
+                WindowUtil.setResizable(true);
+                WindowUtil.setFullScreen(!_isFullScreen);
+                widget.onChangeFullScreen(!_isFullScreen);
+              }
+              setState(() {
+                _isFullScreen = !_isFullScreen;
+              });
+            },
+            icon: Icon(
+                _isFullScreen
+                    ? Icons.fit_screen_rounded
+                    : Icons.fullscreen_rounded,
+                color: Colors.grey),
           )
         ],
       ),

@@ -1,8 +1,8 @@
+import 'dart:developer' as developer;
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tv/model/movie/label.dart';
 import 'package:flutter_tv/service/label.dart';
 import 'package:shimmer/shimmer.dart';
@@ -64,18 +64,19 @@ class _LabelState extends State<Label> {
       alignment: WrapAlignment.center,
       children: _lists.map((item) {
         String id = item.movieUrl.split("/")[2].split(".")[0];
+        String title = Uri.encodeComponent(item.movieName);
         return InkWell(
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
           onTap: () {
             developer.log('$item', name: '电影名');
             Navigator.pushNamedAndRemoveUntil(
-                context, "/detail/$id-1-1", (route) => false);
+                context, "/detail/$id-1-1/$title", (route) => false);
           },
           child: Container(
-            margin: const EdgeInsets.only(top: 20),
+            margin: EdgeInsets.only(top: 20.h),
             padding:
-                const EdgeInsets.only(left: 10, top: 2, right: 10, bottom: 2),
+                EdgeInsets.only(left: 12.h, top: 4.h, right: 12.h, bottom: 4.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.0),
               color: primaries[Random().nextInt(17)],
@@ -102,9 +103,9 @@ class _LabelState extends State<Label> {
           highlightColor: Colors.grey.shade100,
           enabled: true,
           child: Container(
-            width: 80,
-            height: 24,
-            margin: const EdgeInsets.only(top: 20),
+            width: 80.w,
+            height: 24.h,
+            margin: EdgeInsets.only(top: 20.h),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16.0),
               color: const Color(0xFF7C7C7C),

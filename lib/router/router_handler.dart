@@ -14,7 +14,8 @@ var homeScreenHandler = Handler(
 var detailScreenHandler = Handler(
     handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
   String? id = params["id"]?.first;
-  return DetailScreen(id: id ?? "");
+  String? title = params["title"]?.first;
+  return DetailScreen(id: id ?? "", title: title ?? "");
 });
 
 // 搜索

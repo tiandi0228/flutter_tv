@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tv/service/pager.dart';
 import 'package:pagination_flutter/pagination.dart';
 
@@ -46,7 +47,7 @@ class _PagerState extends State<Pager> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: ScreenUtil().setWidth(5)),
       child: Pagination(
         numOfPages: total,
         selectedPage: selectedPage,
@@ -58,19 +59,18 @@ class _PagerState extends State<Pager> {
             selectedPage = page;
           });
         },
-        nextIcon: const Icon(
+        nextIcon: Icon(
           Icons.arrow_circle_right_outlined,
           color: Colors.amberAccent,
-          size: 35,
+          size: 20.sp,
         ),
-        previousIcon: const Icon(
+        previousIcon: Icon(
           Icons.arrow_circle_left_outlined,
           color: Colors.amberAccent,
-          size: 35,
+          size: 20.sp,
         ),
         activeTextStyle: const TextStyle(
           color: Colors.white,
-          fontSize: 14,
           fontWeight: FontWeight.w700,
         ),
         activeBtnStyle: ButtonStyle(
@@ -81,7 +81,6 @@ class _PagerState extends State<Pager> {
           elevation: MaterialStateProperty.all(0),
         ),
         inactiveTextStyle: const TextStyle(
-          fontSize: 14,
           color: Colors.amber,
           fontWeight: FontWeight.w700,
         ),
