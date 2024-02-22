@@ -4,12 +4,14 @@
 - 增加了爬虫功能，数据不做存储
 - 请勿商用
 
-*** Android(huawei nova 3i)
-![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/home4.jpg)
+### Android(huawei nova 3i)
+
+![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo4.jpg)
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo5.jpg)
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo6.jpg)
 
-*** Macos
+### Macos
+
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/home.png)
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo1.png)
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo2.png)
