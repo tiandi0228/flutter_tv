@@ -26,7 +26,7 @@ class _PhoneSearchState extends State<PhoneSearch> {
     return Row(
       children: [
         Container(
-          width: (MediaQuery.of(context).size.width - 80).w,
+          width: (MediaQuery.of(context).size.width - 80.w),
           height: 30.h,
           padding: EdgeInsets.zero,
           child: TextField(
