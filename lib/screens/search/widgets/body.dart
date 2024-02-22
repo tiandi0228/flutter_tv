@@ -1,8 +1,12 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tv/screens/search/widgets/page.dart';
+import 'package:flutter_tv/screens/search/widgets/phone_result.dart';
 import 'package:flutter_tv/screens/search/widgets/result.dart';
 import 'package:flutter_tv/screens/search/widgets/search.dart';
-import 'package:flutter_tv/screens/search/widgets/page.dart';
-import 'dart:developer' as developer;
+import 'package:flutter_tv/utils/platform_util.dart';
 
 class Body extends StatefulWidget {
   final String wd;
@@ -14,48 +18,64 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-  late String result;
-  int pageNum = 1;
-  late bool isRefresh = false;
+  late String _result;
+  int _pageNum = 1;
+  late bool _isRefresh = false;
 
   @override
   void initState() {
     super.initState();
-    result = Uri.decodeComponent(widget.wd);
+
+    if (widget.wd.isEmpty) return;
+
+    setState(() {
+      _result = Uri.decodeComponent(widget.wd);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 10, top: 30, right: 10, bottom: 10),
-      child: Column(
-        children: [
-          Search(
-            wd: result,
-            onChanged: (String val) {
-              if (val.isEmpty) {
-                return;
-              }
-              setState(() {
-                result = val;
-                isRefresh = true;
-              });
-              developer.log(result, name: '搜索返回结果');
-            },
+    return Stack(
+      children: [
+        if (PlatformUtils.isMacOS || PlatformUtils.isWindows)
+          Container(
+            margin: EdgeInsets.only(
+              left: ScreenUtil().setWidth(5),
+              top: ScreenUtil().setWidth(15),
+              right: ScreenUtil().setWidth(5),
+              bottom: ScreenUtil().setWidth(5),
+            ),
+            child: Column(
+              children: [
+                Search(
+                  wd: _result,
+                  onChanged: (String val) {
+                    if (val.isEmpty) {
+                      return;
+                    }
+                    setState(() {
+                      _result = val;
+                      _isRefresh = true;
+                    });
+                    developer.log(_result, name: '搜索返回结果');
+                  },
+                ),
+                Result(wd: _result, page: _pageNum),
+                Pager(
+                  wd: _result,
+                  page: _isRefresh ? 1 : _pageNum,
+                  onChanged: (int page) {
+                    setState(() {
+                      _pageNum = page;
+                    });
+                    developer.log('$page', name: '分页');
+                  },
+                ),
+              ],
+            ),
           ),
-          Result(wd: result, page: pageNum),
-          Pager(
-            wd: result,
-            page: isRefresh ? 1 : pageNum,
-            onChanged: (int page) {
-              setState(() {
-                pageNum = page;
-              });
-              developer.log('$page', name: '分页');
-            },
-          ),
-        ],
-      ),
+        if (PlatformUtils.isAndroid || PlatformUtils.isIOS) const PhoneResult(),
+      ],
     );
   }
 }

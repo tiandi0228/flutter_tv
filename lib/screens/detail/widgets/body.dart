@@ -1,14 +1,16 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_tv/screens/detail/widgets/episodes.dart';
 import 'package:flutter_tv/screens/detail/widgets/search.dart';
 import 'package:flutter_tv/screens/detail/widgets/testimonials.dart';
 import 'package:flutter_tv/screens/detail/widgets/video.dart';
-import 'dart:developer' as developer;
-
-import 'package:flutter_tv/utils/window_util.dart';
+import 'package:flutter_tv/utils/platform_util.dart';
 
 class Body extends StatefulWidget {
   final String id;
+
   const Body({super.key, required this.id});
 
   @override
@@ -31,14 +33,21 @@ class _BodyState extends State<Body> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 10, top: 30, right: 10, bottom: 10),
+      margin: EdgeInsets.only(
+        left: ScreenUtil().setWidth(10),
+        top: ScreenUtil().setWidth(
+            PlatformUtils.isMacOS || PlatformUtils.isWindows ? 15 : 10),
+        right: ScreenUtil().setWidth(10),
+        bottom: ScreenUtil().setWidth(10),
+      ),
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            _buildSearch(),
+            if (PlatformUtils.isMacOS || PlatformUtils.isWindows)
+              _buildSearch(),
             VideoPlay(
               id: id,
               onChangeFullScreen: (value) {

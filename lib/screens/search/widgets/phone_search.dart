@@ -3,38 +3,17 @@ import 'dart:developer' as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Search extends StatefulWidget {
-  final String wd;
+class PhoneSearch extends StatefulWidget {
   final Function onChanged;
 
-  const Search({
-    super.key,
-    required this.wd,
-    required this.onChanged,
-  });
+  const PhoneSearch({super.key, required this.onChanged});
 
   @override
-  State<Search> createState() => _SearchState();
+  State<StatefulWidget> createState() => _PhoneSearchState();
 }
 
-class _SearchState extends State<Search> {
+class _PhoneSearchState extends State<PhoneSearch> {
   final TextEditingController _textController = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    _textController.text = widget.wd;
-  }
-
-  @override
-  void didUpdateWidget(covariant Search oldWidget) {
-    // TODO: implement didUpdateWidget
-    super.didUpdateWidget(oldWidget);
-
-    _textController.text = widget.wd;
-  }
 
   @override
   void dispose() {
@@ -44,20 +23,18 @@ class _SearchState extends State<Search> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildDesktop();
-  }
-
-  Widget _buildDesktop() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 250.w,
-          height: 50.h,
-          margin: EdgeInsets.only(top: ScreenUtil().setWidth(10)),
+          width: (MediaQuery.of(context).size.width - 80).w,
+          height: 30.h,
+          padding: EdgeInsets.zero,
           child: TextField(
+            autofocus: true,
             controller: _textController,
+            cursorColor: Colors.white,
             textAlignVertical: TextAlignVertical.bottom,
+            textInputAction: TextInputAction.search,
             decoration: InputDecoration(
               filled: true,
               fillColor: const Color(0xF1F3F4F5),
@@ -65,7 +42,7 @@ class _SearchState extends State<Search> {
                 Icons.search,
                 color: Colors.grey,
               ),
-              prefixIconConstraints: const BoxConstraints(minWidth: 50).r,
+              prefixIconConstraints: const BoxConstraints(minWidth: 40).r,
               border: InputBorder.none,
               hintText: '搜索影片的名字',
               hintStyle: const TextStyle(
@@ -74,22 +51,33 @@ class _SearchState extends State<Search> {
               hoverColor: Colors.white,
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(50.0).w,
+                borderRadius: BorderRadius.circular(5.0).w,
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(50.0).w,
+                borderRadius: BorderRadius.circular(5.0).w,
               ),
             ),
             onSubmitted: (value) {
-              if (value == "") {
+              if (value.isEmpty) {
                 return;
               }
+              _textController.text = value;
               widget.onChanged(value);
             },
             onEditingComplete: () {
               developer.log('搜索完成');
+              FocusScope.of(context).requestFocus(FocusNode());
             },
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text(
+            '取消',
+            style: TextStyle(color: Colors.grey),
           ),
         ),
       ],

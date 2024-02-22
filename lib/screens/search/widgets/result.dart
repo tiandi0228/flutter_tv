@@ -1,14 +1,16 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_tv/model/movie/search.dart';
-import 'package:flutter_tv/service/search.dart';
 import 'dart:developer' as developer;
 
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tv/model/movie/search.dart';
+import 'package:flutter_tv/service/search.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Result extends StatefulWidget {
   final String wd;
   final int page;
+
   const Result({super.key, required this.wd, required this.page});
 
   @override
@@ -20,6 +22,7 @@ class _ResultState extends State<Result> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     fetchSearch(widget.wd, widget.page).then((data) {
       setState(() {
@@ -44,13 +47,16 @@ class _ResultState extends State<Result> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: ScreenUtil().setWidth(10)),
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height - 210,
+      height: (MediaQuery.of(context).size.height - 150).h,
       child: _movies.isEmpty
           ? GridView.count(
               crossAxisCount: 2,
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: EdgeInsets.only(
+                left: ScreenUtil().setWidth(10),
+                right: ScreenUtil().setWidth(10),
+              ),
               mainAxisSpacing: 20,
               crossAxisSpacing: 20,
               childAspectRatio: 1.8,
@@ -58,7 +64,10 @@ class _ResultState extends State<Result> {
             )
           : GridView.count(
               crossAxisCount: 2,
-              padding: const EdgeInsets.only(left: 20, right: 20),
+              padding: EdgeInsets.only(
+                left: ScreenUtil().setWidth(10),
+                right: ScreenUtil().setWidth(10),
+              ),
               mainAxisSpacing: 20,
               crossAxisSpacing: 20,
               childAspectRatio: 1.8,
@@ -71,21 +80,21 @@ class _ResultState extends State<Result> {
     String id = movie.movieUrl.split("/")[2].split(".")[0];
     return Container(
       margin: EdgeInsets.zero,
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(ScreenUtil().setWidth(5)),
       color: const Color(0xFFFFFFFF),
       child: Row(
         children: [
           CachedNetworkImage(
             imageUrl: movie.moviePic,
-            width: 120,
-            height: 200,
+            width: 50.w,
+            height: 200.h,
             fit: BoxFit.fitHeight,
             placeholder: (context, url) => const CircularProgressIndicator(),
             errorWidget: (context, url, error) => const Icon(Icons.error),
           ),
           Container(
-            width: (MediaQuery.of(context).size.width - 380) / 2,
-            margin: const EdgeInsets.only(left: 10),
+            width: ((MediaQuery.of(context).size.width - 620) / 2).w,
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(5)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -94,69 +103,83 @@ class _ResultState extends State<Result> {
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
-                  style: const TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 10.sp),
                 ),
-                const Padding(padding: EdgeInsets.only(bottom: 10)),
+                Padding(
+                    padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(5))),
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(
-                          left: 5, top: 2, right: 5, bottom: 2),
-                      margin: const EdgeInsets.only(right: 10),
+                      padding: EdgeInsets.only(
+                        left: ScreenUtil().setWidth(2.5),
+                        top: ScreenUtil().setWidth(1),
+                        right: ScreenUtil().setWidth(2.5),
+                        bottom: ScreenUtil().setWidth(1),
+                      ),
+                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(5)),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE1E1E1),
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(2).w,
                       ),
                       child: Text(
                         movie.movieClass,
-                        style: const TextStyle(
-                            color: Color(0xFF6D6D6D), fontSize: 12),
+                        style: TextStyle(
+                            color: const Color(0xFF6D6D6D), fontSize: 6.sp),
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.only(
-                          left: 5, top: 2, right: 5, bottom: 2),
-                      margin: const EdgeInsets.only(right: 10),
+                      padding: EdgeInsets.only(
+                        left: ScreenUtil().setWidth(2.5),
+                        top: ScreenUtil().setWidth(1),
+                        right: ScreenUtil().setWidth(2.5),
+                        bottom: ScreenUtil().setWidth(1),
+                      ),
+                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(5)),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE1E1E1),
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(2).w,
                       ),
                       child: Text(
                         movie.movieYear,
-                        style: const TextStyle(
-                            color: Color(0xFF6D6D6D), fontSize: 12),
+                        style: TextStyle(
+                            color: const Color(0xFF6D6D6D), fontSize: 6.sp),
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.only(
-                          left: 5, top: 2, right: 5, bottom: 2),
-                      margin: const EdgeInsets.only(right: 10),
+                      padding: EdgeInsets.only(
+                        left: ScreenUtil().setWidth(2.5),
+                        top: ScreenUtil().setWidth(1),
+                        right: ScreenUtil().setWidth(2.5),
+                        bottom: ScreenUtil().setWidth(1),
+                      ),
+                      margin: EdgeInsets.only(right: ScreenUtil().setWidth(5)),
                       decoration: BoxDecoration(
                         color: const Color(0xFFE1E1E1),
-                        borderRadius: BorderRadius.circular(5),
+                        borderRadius: BorderRadius.circular(2).w,
                       ),
                       child: Text(
                         movie.movieSource,
-                        style: const TextStyle(
-                            color: Color(0xFF6D6D6D), fontSize: 12),
+                        style: TextStyle(
+                            color: const Color(0xFF6D6D6D), fontSize: 6.sp),
                       ),
                     ),
                   ],
                 ),
-                const Padding(padding: EdgeInsets.only(top: 10)),
+                Padding(
+                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(5))),
                 Text.rich(
                   TextSpan(
                     text: "导演: ",
-                    style: const TextStyle(
-                      color: Color(0xFF797A7A),
-                      fontSize: 13,
+                    style: TextStyle(
+                      color: const Color(0xFF797A7A),
+                      fontSize: 6.5.sp,
                     ),
                     children: [
                       TextSpan(
                         text: movie.movieDirector,
-                        style: const TextStyle(
-                          color: Color(0xFF3C3C3C),
-                          fontSize: 13,
+                        style: TextStyle(
+                          color: const Color(0xFF3C3C3C),
+                          fontSize: 6.5.sp,
                         ),
                       ),
                     ],
@@ -164,20 +187,21 @@ class _ResultState extends State<Result> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const Padding(padding: EdgeInsets.only(top: 10)),
+                Padding(
+                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(5))),
                 Text.rich(
                   TextSpan(
                     text: "主演: ",
-                    style: const TextStyle(
-                      color: Color(0xFF797A7A),
-                      fontSize: 13,
+                    style: TextStyle(
+                      color: const Color(0xFF797A7A),
+                      fontSize: 6.5.sp,
                     ),
                     children: [
                       TextSpan(
                         text: movie.movieStarring,
-                        style: const TextStyle(
-                          color: Color(0xFF3C3C3C),
-                          fontSize: 13,
+                        style: TextStyle(
+                          color: const Color(0xFF3C3C3C),
+                          fontSize: 6.5.sp,
                         ),
                       ),
                     ],
@@ -185,7 +209,8 @@ class _ResultState extends State<Result> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const Padding(padding: EdgeInsets.only(top: 10)),
+                Padding(
+                    padding: EdgeInsets.only(top: ScreenUtil().setWidth(5))),
                 Container(
                   margin: const EdgeInsets.all(0),
                   decoration: BoxDecoration(
@@ -196,12 +221,12 @@ class _ResultState extends State<Result> {
                         Color(0xFFFF4D43),
                       ],
                     ),
-                    borderRadius: BorderRadius.circular(25),
+                    borderRadius: BorderRadius.circular(25).w,
                   ),
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamedAndRemoveUntil(
-                          context, "/detail/$id-1-1", (route) => false);
+                          context, "/detail/$id-1-1/", (route) => false);
                       developer.log(movie.movieName, name: 'search');
                     },
                     style: ButtonStyle(
@@ -232,7 +257,7 @@ class _ResultState extends State<Result> {
       enabled: true,
       child: Container(
         margin: EdgeInsets.zero,
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(ScreenUtil().setWidth(5)),
         color: const Color(0xFFFFFFFF),
       ),
     );

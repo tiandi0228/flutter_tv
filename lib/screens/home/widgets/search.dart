@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Search extends StatefulWidget {
   const Search({super.key});
@@ -11,18 +13,23 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
+    return _buildDesktop();
+  }
+
+  Widget _buildDesktop() {
     return Container(
-      height: 60,
+      height: 60.h,
       padding: const EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 500,
-            height: 50,
+            width: 250.w,
+            height: 50.h,
             padding: const EdgeInsets.all(0),
             child: TextField(
+              textAlignVertical: TextAlignVertical.bottom,
               decoration: InputDecoration(
                 filled: true,
                 fillColor: const Color(0xF1F3F4F5),
@@ -30,7 +37,7 @@ class _SearchState extends State<Search> {
                   Icons.search,
                   color: Colors.grey,
                 ),
-                prefixIconConstraints: const BoxConstraints(minWidth: 50),
+                prefixIconConstraints: const BoxConstraints(minWidth: 50).r,
                 border: InputBorder.none,
                 hintText: '搜索影片的名字',
                 hintStyle: const TextStyle(
@@ -39,11 +46,11 @@ class _SearchState extends State<Search> {
                 hoverColor: Colors.white,
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(50.0),
+                  borderRadius: BorderRadius.circular(50.0).w,
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
-                  borderRadius: BorderRadius.circular(50.0),
+                  borderRadius: BorderRadius.circular(50.0).w,
                 ),
               ),
               onSubmitted: (value) {

@@ -1,17 +1,19 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tv/service/video.dart';
 import 'package:flutter_tv/utils/format_duration_util.dart';
+import 'package:flutter_tv/utils/platform_util.dart';
 import 'package:flutter_tv/utils/window_util.dart';
 import 'package:video_player/video_player.dart';
-import 'dart:developer' as developer;
 
 class VideoPlay extends StatefulWidget {
   final String id;
   final Function onChangeFullScreen;
+
   const VideoPlay(
       {super.key, required this.id, required this.onChangeFullScreen});
 
@@ -30,6 +32,7 @@ class _VideoPlayState extends State<VideoPlay> {
   String _labelProgress = "00:00:00";
   double _volumeValue = 0.0;
   bool _isFullScreen = false;
+  bool isPhone = PlatformUtils.isIOS || PlatformUtils.isIOS;
 
   @override
   void initState() {
@@ -178,7 +181,7 @@ class _VideoPlayState extends State<VideoPlay> {
 
   Widget _buildPlayerInit() {
     return AspectRatio(
-      aspectRatio: _isFullScreen ? 2 / 1 : 3 / 1.5,
+      aspectRatio: _isFullScreen ? 2 / 1 : 3 / 1.3,
       child: Stack(
         children: [
           CachedNetworkImage(
@@ -297,7 +300,7 @@ class _VideoPlayState extends State<VideoPlay> {
                   color: Colors.grey,
                 ),
               ),
-              _buildVolume(),
+              if (isPhone) _buildVolume(),
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: Text(
@@ -313,9 +316,12 @@ class _VideoPlayState extends State<VideoPlay> {
           IconButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              WindowUtil.setResizable(true);
-              WindowUtil.setFullScreen(!_isFullScreen);
-              widget.onChangeFullScreen(!_isFullScreen);
+              if (isPhone) {
+              } else {
+                WindowUtil.setResizable(true);
+                WindowUtil.setFullScreen(!_isFullScreen);
+                widget.onChangeFullScreen(!_isFullScreen);
+              }
               setState(() {
                 _isFullScreen = !_isFullScreen;
               });
