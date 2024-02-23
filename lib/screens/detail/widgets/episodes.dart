@@ -68,33 +68,44 @@ class _EpisodesState extends State<Episodes> {
   // 基本信息
   Widget _info(Movie movie) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        movie.movieName.isEmpty
+            ? _shimmer()
+            : Text(
+                movie.movieName,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+        const Padding(padding: EdgeInsets.only(top: 5)),
         Row(
           children: [
-            movie.movieName.isEmpty
+            movie.moviePage.isEmpty
                 ? _shimmer()
-                : Text(
-                    movie.movieName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
+                : Container(
+                    padding: EdgeInsets.only(
+                      left: ScreenUtil().setWidth(8),
+                      top: ScreenUtil().setWidth(3),
+                      right: ScreenUtil().setWidth(8),
+                      bottom: ScreenUtil().setWidth(3),
+                    ),
+                    color: const Color(0xFF7C7C7C),
+                    alignment: Alignment.center,
+                    child: Text(
+                      movie.moviePage,
+                      style: const TextStyle(
+                        color: Color(0xFFE1E1E1),
+                        fontSize: 16,
+                      ),
                     ),
                   ),
             Padding(padding: EdgeInsets.only(left: ScreenUtil().setWidth(5))),
-            movie.moviePage.isEmpty
-                ? _shimmer()
-                : Text(
-                    movie.moviePage,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
-          ],
-        ),
-        Padding(padding: EdgeInsets.only(top: ScreenUtil().setWidth(5))),
-        Row(
-          children: [
             movie.movieClass.isEmpty
                 ? _shimmer()
                 : Container(

@@ -4,6 +4,12 @@
 - 增加了爬虫功能，数据不做存储
 - 请勿商用
 
+### Ios(iphone11 版本17.2.1)
+
+![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo7.png)
+![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo8.png)
+![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo9.png)
+
 ### Android(huawei nova 3i)
 
 ![](https://github.com/tiandi0228/flutter_tv/blob/dev/doc/demo4.jpg)

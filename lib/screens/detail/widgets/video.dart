@@ -32,7 +32,7 @@ class _VideoPlayState extends State<VideoPlay> {
   String _labelProgress = "00:00:00";
   double _volumeValue = 0.0;
   bool _isFullScreen = false;
-  bool isPhone = PlatformUtils.isIOS || PlatformUtils.isIOS;
+  bool isPhone = PlatformUtils.isIOS || PlatformUtils.isAndroid;
 
   @override
   void initState() {
@@ -300,7 +300,7 @@ class _VideoPlayState extends State<VideoPlay> {
                   color: Colors.grey,
                 ),
               ),
-              if (isPhone) _buildVolume(),
+              if (!isPhone) _buildVolume(),
               Container(
                 margin: const EdgeInsets.only(left: 10),
                 child: Text(
@@ -316,7 +316,7 @@ class _VideoPlayState extends State<VideoPlay> {
           IconButton(
             padding: EdgeInsets.zero,
             onPressed: () {
-              if (isPhone) {
+              if (!isPhone) {
               } else {
                 WindowUtil.setResizable(true);
                 WindowUtil.setFullScreen(!_isFullScreen);
